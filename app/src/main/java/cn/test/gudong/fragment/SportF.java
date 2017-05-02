@@ -1,11 +1,13 @@
 package cn.test.gudong.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import java.util.List;
 
 import cn.test.gudong.BasicFragment;
 import cn.test.gudong.R;
+import cn.test.gudong.TrackActivity;
 
 /**
  * Created by jiahaodong on 2017/4/27-14:05.
@@ -31,12 +34,21 @@ public class SportF extends BasicFragment{
     private View yundong;
     private View jibu;
 
+    Button begain;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.f_sport, container, false);
         vp= (ViewPager) view.findViewById(R.id.vp);
         //LayoutInflater inflater=getLayoutInflater();
         yundong = inflater.inflate(R.layout.f_sport_yundong, null);
+        begain = (Button) yundong.findViewById(R.id.begin);
+        begain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), TrackActivity.class));
+            }
+        });
         jibu = inflater.inflate(R.layout.f_sport_jibu,null);
         viewList =new ArrayList<>();
         viewList.add(yundong);
