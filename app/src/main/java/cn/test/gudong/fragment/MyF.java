@@ -1,12 +1,21 @@
 package cn.test.gudong.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
 
 import cn.test.gudong.BasicFragment;
 import cn.test.gudong.R;
+import cn.test.gudong.db.entity.DBTestActivity;
+import cn.test.gudong.sign.LoginA;
 
 /**
  * Created by jiahaodong on 2017/4/28-23:29.
@@ -14,10 +23,24 @@ import cn.test.gudong.R;
  * https://github.com/jhd147350
  */
 
+@ContentView(R.layout.f_my)
 public class MyF extends BasicFragment {
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view =inflater.inflate(R.layout.f_my,container,false);
-        return view;
+
+    @ViewInject(R.id.login)
+    Button login;
+
+    @ViewInject(R.id.db_test)
+    Button db_test;
+
+
+    @Event(value = R.id.login, type = View.OnClickListener.class)
+    private void login(View view) {
+        Log.e("jhd", "click login on my");
+        startActivity(new Intent(getActivity(), LoginA.class));
+    }
+
+    @Event(value = R.id.db_test, type = View.OnClickListener.class)
+    private void db_test(View view) {
+        Log.e("jhd", "click dbTest on my");
     }
 }

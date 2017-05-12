@@ -20,16 +20,18 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    //compile 'org.json:json:20160810'
+    //http://blog.csdn.net/a49220824/article/details/68953432
+    //https://github.com/amitshekhariitbhu/Android-Debug-Database
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:support-v4:24.2.1'
-    testCompile 'junit:junit:4.12'
     compile 'org.xutils:xutils:3.5.0'
-
-    //http://blog.csdn.net/a49220824/article/details/68953432
+    testCompile 'junit:junit:4.12'
     debugCompile 'com.amitshekhar.android:debug-db:1.0.0'
+    compile 'com.android.support:recyclerview-v7:24.2.1'
 }

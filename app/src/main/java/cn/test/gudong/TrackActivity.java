@@ -3,12 +3,15 @@ package cn.test.gudong;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
@@ -23,7 +26,6 @@ import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
-import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
@@ -33,11 +35,13 @@ import com.baidu.mapapi.model.LatLng;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.test.gudong.db.entity.Track;
 import cn.test.gudong.map.MyOrientationListener;
 
 public class TrackActivity extends BasicActivity {
     String tag = "TrackActivity";
+
+    private TextView locationStatus;
+    private TextView end;
 
     //地图模式
     private int mode = 1;//1.普通，2，跟随，3罗盘。默认是1；
@@ -73,6 +77,57 @@ public class TrackActivity extends BasicActivity {
 
 
     }
+    Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            /*
+            TypeNone = 0;
+    int TypeGpsLocation = 61;
+    int TypeCriteriaException = 62;
+    int TypeNetWorkException = 63;
+    int TypeOffLineLocation = 66;
+    int TypeOffLineLocationFail = 67;
+    int TypeOffLineLocationNetworkFail = 68;
+    int TypeNetWorkLocation = 161;
+    int TypeCacheLocation = 65;
+    int TypeServerError = 167;
+    TypeServerDecryptError = 162;
+    TypeServerCheckKeyError = 505;
+
+             */
+            switch (msg.what){
+
+                case BDLocation.TypeNone:
+                    locationStatus.setText("None");
+                    break;
+                case BDLocation.TypeGpsLocation:
+                    locationStatus.setText("GPS定位中");
+                    break;
+                case BDLocation.TypeOffLineLocation:
+                    locationStatus.setText("离线定位中");
+                    break;
+                case BDLocation.TypeOffLineLocationFail:
+                    locationStatus.setText("离线定位失败");
+                    break;
+                case BDLocation.TypeNetWorkLocation:
+                    locationStatus.setText("网络定位中");
+                    break;
+                case BDLocation.TypeCacheLocation:
+                    locationStatus.setText("缓存定位中");
+                    break;
+                case BDLocation.TypeServerError:
+                    locationStatus.setText("服务器错误");
+                    break;
+                case BDLocation.TypeServerCheckKeyError:
+                    locationStatus.setText("Key错误");
+                    break;
+                default:
+                    locationStatus.setText("定位失败"+msg.what);
+                    break;
+            }
+        }
+    };
 
     private void begain_location() {
         locateCurrent();
@@ -194,7 +249,7 @@ public class TrackActivity extends BasicActivity {
         locationClient.registerLocationListener(locationListener);
 
         LocationClientOption option = new LocationClientOption();
-       // LocationClientOption.MIN_SCAN_SPAN
+        // LocationClientOption.MIN_SCAN_SPAN
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy
         );//可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
         // http://bbs.lbsyun.baidu.com/forum.php?mod=viewthread&tid=2920
@@ -270,12 +325,20 @@ public class TrackActivity extends BasicActivity {
         super.initView();
         mapView = (MapView) findViewById(R.id.map);
         baiduMap = mapView.getMap();
+        locationStatus = (TextView) findViewById(R.id.location_status);
+        end = (TextView) findViewById(R.id.end);
 
     }
 
     @Override
     protected void initListener() {
         super.initListener();
+        end.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @Override
@@ -312,7 +375,6 @@ public class TrackActivity extends BasicActivity {
     private float mXDirection = 0;//方向角度,一开始归为0
     //轨迹点
     List<LatLng> pts = new ArrayList<LatLng>();
-    ;
 
     public class MyLocationListener implements BDLocationListener {
         MyLocationData locData;
@@ -320,11 +382,13 @@ public class TrackActivity extends BasicActivity {
         @Override
         public void onReceiveLocation(BDLocation location) {
             Log.e(tag, "onReceiveLocation locType:" + location.getLocType());
-           // Toast.makeText(TrackActivity.this, "type"+location.getLocType()+"la:"+location.getLatitude()+" lo:"+location.getLongitude(), Toast.LENGTH_SHORT).show();
+            // Toast.makeText(TrackActivity.this, "type"+location.getLocType()+"la:"+location.getLatitude()+" lo:"+location.getLongitude(), Toast.LENGTH_SHORT).show();
             //获取定位结果
+
+            //更改定位状态
+            handler.sendEmptyMessage(location.getLocType());
             // TODO 这里调试用与输出位置的相关信息
-            //outputResult(location);
-            ;
+            outputResult(location);
             // Toast.makeText(TrackActivity.this,"locType:"+location.getLocType(),Toast.LENGTH_SHORT).show();
             //167表示错误
             //Receive Location
@@ -352,28 +416,27 @@ public class TrackActivity extends BasicActivity {
             Log.e("jhd", "AddrStr:" + location.getAddrStr());
 
 
-
             //位置有变化就增加一个点
             if (last_localposition.latitude != ll.latitude || last_localposition.longitude != ll.longitude) {
 
-                if (location.getLocType() == BDLocation.TypeGpsLocation){
-                   // Toast.makeText(TrackActivity.this, "GPS add", Toast.LENGTH_SHORT).show();
+                if (location.getLocType() == BDLocation.TypeGpsLocation) {
+                    // Toast.makeText(TrackActivity.this, "GPS add", Toast.LENGTH_SHORT).show();
                     pts.add(ll);
-                }else{
-                   // Toast.makeText(TrackActivity.this, "add", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Toast.makeText(TrackActivity.this, "add", Toast.LENGTH_SHORT).show();
                 }
 
             }
             last_localposition = ll;
 
 
-
             if (pts.size() > 1) {
                 //points count can not less than 2
                 OverlayOptions polylineOpt = new PolylineOptions().points(pts);
+                //mapView.getOverlay().clear();
+                baiduMap.clear();
                 baiduMap.addOverlay(polylineOpt);
             }
-
 
 
         }
@@ -405,6 +468,7 @@ public class TrackActivity extends BasicActivity {
 
         if (location.getLocType() == BDLocation.TypeGpsLocation) {
 
+           // locationStatus.setText("GPS定位中 卫星数:"+location.getSatelliteNumber());
             // GPS定位结果
             sb.append("\nspeed : ");
             sb.append(location.getSpeed());    // 单位：公里每小时
@@ -425,6 +489,7 @@ public class TrackActivity extends BasicActivity {
             sb.append("gps定位成功");
 
         } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {
+            //locationStatus.setText("网络定位中");
 
             // 网络定位结果
             sb.append("\naddr : ");
@@ -437,26 +502,29 @@ public class TrackActivity extends BasicActivity {
             sb.append("网络定位成功");
 
         } else if (location.getLocType() == BDLocation.TypeOffLineLocation) {
+            //locationStatus.setText("离线定位中");
 
             // 离线定位结果
             sb.append("\ndescribe : ");
             sb.append("离线定位成功，离线定位结果也是有效的");
 
         } else if (location.getLocType() == BDLocation.TypeServerError) {
-
+           // locationStatus.setText("服务端网络定位失败");
             sb.append("\ndescribe : ");
             sb.append("服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因");
 
         } else if (location.getLocType() == BDLocation.TypeNetWorkException) {
-
+          //  locationStatus.setText("网络定位失败，请检查网络");
             sb.append("\ndescribe : ");
             sb.append("网络不同导致定位失败，请检查网络是否通畅");
 
         } else if (location.getLocType() == BDLocation.TypeCriteriaException) {
-
+          //  locationStatus.setText("多种原因定位失败");
             sb.append("\ndescribe : ");
             sb.append("无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机");
-
+        }
+        else{
+           // locationStatus.setText("努力定位中");
         }
 
         sb.append("\nlocationdescribe : ");
@@ -472,7 +540,7 @@ public class TrackActivity extends BasicActivity {
             }
         }
 
-        Log.i("BaiduLocationApiDem", sb.toString());
+        Log.i("baidu", sb.toString());
     }
 
     @Override

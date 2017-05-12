@@ -19,13 +19,16 @@
         </com.baidu.mapapi.map.MapView>
 
         <TextView
+            android:id="@+id/location_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:text="GPS 搜索中"
+            android:text="请开启网络和GPS"
             android:textSize="25sp" />
 
         <TextView
+            android:clickable="true"
+            android:id="@+id/end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
