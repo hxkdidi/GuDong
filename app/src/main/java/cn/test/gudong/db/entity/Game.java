@@ -1,4 +1,4 @@
-package cn.test.gudong.fragment;
+package cn.test.gudong.db.entity;
 
 /**
  * Created by jiahaodong on 2017/5/12-22:23.
@@ -13,6 +13,7 @@ public class Game {
     private String tag;
     private String image;
     private String details;
+    private int peoplenum;
     public int getId() {
         return id;
     }
@@ -49,9 +50,25 @@ public class Game {
     public void setDetails(String details) {
         this.details = details;
     }
+
+    public int getPeoplenum() {
+        return peoplenum;
+    }
+
+    public void setPeoplenum(int peoplenum) {
+        this.peoplenum = peoplenum;
+    }
+
     @Override
     public String toString() {
-        return "Game [id=" + id + ", title=" + title + ", date=" + date + ", tag=" + tag + ", image=" + image
-                + ", details=" + details + "]";
+        return "Game{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", date='" + date + '\'' +
+                ", tag='" + tag + '\'' +
+                ", image='" + image + '\'' +
+                ", details='" + details + '\'' +
+                ", peoplenum=" + peoplenum +
+                '}';
     }
 }
