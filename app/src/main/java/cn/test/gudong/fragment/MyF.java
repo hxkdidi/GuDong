@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
@@ -27,10 +28,10 @@ import cn.test.gudong.sign.LoginA;
 public class MyF extends BasicFragment {
 
     @ViewInject(R.id.login)
-    Button login;
+    TextView login;
 
-    @ViewInject(R.id.db_test)
-    Button db_test;
+    //@ViewInject(R.id.db_test)
+    //Button db_test;
 
 
     @Event(value = R.id.login, type = View.OnClickListener.class)
@@ -39,8 +40,8 @@ public class MyF extends BasicFragment {
         startActivity(new Intent(getActivity(), LoginA.class));
     }
 
-    @Event(value = R.id.db_test, type = View.OnClickListener.class)
+   /* @Event(value = R.id.db_test, type = View.OnClickListener.class)
     private void db_test(View view) {
         Log.e("jhd", "click dbTest on my");
-    }
+    }*/
 }
