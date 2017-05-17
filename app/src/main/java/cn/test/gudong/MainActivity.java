@@ -8,14 +8,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
+
+import org.xutils.view.annotation.ViewInject;
 
 import cn.test.gudong.fragment.GameF;
 import cn.test.gudong.fragment.MyF;
 import cn.test.gudong.fragment.SportF;
 
 public class MainActivity extends BasicActivity implements View.OnClickListener {
-    String tag="MainActivity";
+    String tag = "MainActivity";
 
     LinearLayout content;
     Fragment sportF;
@@ -24,9 +27,12 @@ public class MainActivity extends BasicActivity implements View.OnClickListener 
     //当前正在显示的fragment
     Fragment mCurrent;
 
-    TextView game;
-    TextView sport;
-    TextView my;
+    @ViewInject(R.id.game)
+    RadioButton game;
+    @ViewInject(R.id.sport)
+    RadioButton sport;
+    @ViewInject(R.id.my)
+    RadioButton my;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +51,6 @@ public class MainActivity extends BasicActivity implements View.OnClickListener 
     @Override
     protected void initView() {
         super.initView();
-        game = (TextView) findViewById(R.id.game);
-        sport = (TextView) findViewById(R.id.sport);
-        my = (TextView) findViewById(R.id.my);
 
         content = (LinearLayout) findViewById(R.id.content);
         sportF = new SportF();
@@ -94,31 +97,32 @@ public class MainActivity extends BasicActivity implements View.OnClickListener 
         if (mCurrent == null) {
             mCurrent = to;
         }
-        if(mCurrent==to){
-            if(!to.isAdded()) {
+        if (mCurrent == to) {
+            if (!to.isAdded()) {
                 ft.add(R.id.content, to);
                 ft.commit();
-                Log.d(tag,"初始化"+to.getClass().getSimpleName());
+                Log.d(tag, "初始化" + to.getClass().getSimpleName());
 
-            }else{
-                Log.d(tag,"没有任何变化");
+            } else {
+                Log.d(tag, "没有任何变化");
             }
 
-        }else{
-            if (!to.isAdded()){
+        } else {
+            if (!to.isAdded()) {
                 ft.hide(mCurrent);
-                ft.add(R.id.content,to);
+                ft.add(R.id.content, to);
                 ft.commit();
-                Log.d(tag,"第一次从"+mCurrent.getClass().getSimpleName()+"切换到"+to.getClass().getSimpleName());
-            }else{
+                Log.d(tag, "第一次从" + mCurrent.getClass().getSimpleName() + "切换到" + to.getClass().getSimpleName());
+            } else {
                 ft.hide(mCurrent);
                 ft.show(to);
                 ft.commit();
-                Log.d(tag,"从"+mCurrent.getClass().getSimpleName()+"切换到"+to.getClass().getSimpleName());;
+                Log.d(tag, "从" + mCurrent.getClass().getSimpleName() + "切换到" + to.getClass().getSimpleName());
+                ;
             }
         }
         //最终切换到的fragment就是当前fragment
-        mCurrent=to;
+        mCurrent = to;
     }
 
 

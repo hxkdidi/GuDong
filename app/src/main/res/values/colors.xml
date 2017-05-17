@@ -3,4 +3,8 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="sport_bg">#2ED373</color>
+
+    <color name="bg_gray">#dddddd</color>
 </resources>

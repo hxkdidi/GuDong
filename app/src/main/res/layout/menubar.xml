@@ -1,31 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:gravity="center_vertical"
-    android:layout_height="@dimen/menubar_height">
-    <TextView
-        android:id="@+id/game"
-        android:drawableTop="@drawable/ic_top"
-        android:gravity="center"
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="game"/>
-    <TextView
-        android:id="@+id/sport"
-        android:drawableTop="@drawable/ic_top"
-        android:gravity="center"
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="sport"/>
-    <TextView
-        android:id="@+id/my"
-        android:drawableTop="@drawable/ic_top"
-        android:gravity="center"
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="my"/>
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/menubar_height"
+    android:background="#fff"
+    android:orientation="vertical">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/bg_gray"/>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:layout_height="48dp"
+        android:orientation="horizontal">0
+
+        <RadioButton
+            android:id="@+id/game"
+            style="@style/tab_btn"
+            android:drawableTop="@drawable/tab_game"
+            android:text="game" />
+
+        <RadioButton
+            android:id="@+id/sport"
+
+            style="@style/tab_btn"
+            android:checked="true"
+            android:drawableTop="@drawable/tab_sport"
+
+            android:text="sport" />
+
+        <RadioButton
+            android:id="@+id/my"
+            style="@style/tab_btn"
+            android:drawableTop="@drawable/tab_my"
+            android:text="my" />
+    </RadioGroup>
 
 </LinearLayout>

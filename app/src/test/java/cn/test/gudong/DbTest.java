@@ -15,8 +15,8 @@ import cn.test.gudong.db.entity.Track;
 public class DbTest {
     @Test
     public void insertData() throws DbException {
-        Track track=new Track();
-        track.setTimestamp(System.currentTimeMillis());
-        DBHelper.insertTrack(track);
+       // Track track=new Track();
+        //track.setTimestamp(System.currentTimeMillis());
+        //DBHelper.insertTrack(track);
     }
 }
