@@ -56,7 +56,8 @@
 
         <activity android:name=".db.entity.DBTestActivity" />
         <activity android:name=".sign.LoginA" />
-        <activity android:name=".game.GameDetailActivity"></activity>
+        <activity android:name=".game.GameDetailActivity"/>
+        <activity android:name=".user.BDTraceA"/>
     </application>
 
 </manifest>

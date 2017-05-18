@@ -17,6 +17,7 @@ import cn.test.gudong.BasicFragment;
 import cn.test.gudong.R;
 import cn.test.gudong.db.entity.DBTestActivity;
 import cn.test.gudong.sign.LoginA;
+import cn.test.gudong.user.BDTraceA;
 
 /**
  * Created by jiahaodong on 2017/4/28-23:29.
@@ -29,6 +30,9 @@ public class MyF extends BasicFragment {
 
     @ViewInject(R.id.login)
     TextView login;
+
+    @ViewInject(R.id.test)
+    Button test;
 
     //@ViewInject(R.id.db_test)
     //Button db_test;
@@ -44,4 +48,9 @@ public class MyF extends BasicFragment {
     private void db_test(View view) {
         Log.e("jhd", "click dbTest on my");
     }*/
+
+   @Event(R.id.test)
+    private void test(View v){
+       startActivity(new Intent(getActivity(), BDTraceA.class));
+   }
 }

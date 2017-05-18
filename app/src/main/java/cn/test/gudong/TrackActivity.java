@@ -31,6 +31,7 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.utils.DistanceUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +46,12 @@ public class TrackActivity extends BasicActivity {
 
     //地图模式
     private int mode = 1;//1.普通，2，跟随，3罗盘。默认是1；
+
+    private long startTime;// start and end time
+    private long endTime;
+
+    private double sum_distance = 0.0;
+
 
     MapView mapView;
     BaiduMap baiduMap;
@@ -77,7 +84,8 @@ public class TrackActivity extends BasicActivity {
 
 
     }
-    Handler handler=new Handler(){
+
+    Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -96,7 +104,7 @@ public class TrackActivity extends BasicActivity {
     TypeServerCheckKeyError = 505;
 
              */
-            switch (msg.what){
+            switch (msg.what) {
 
                 case BDLocation.TypeNone:
                     locationStatus.setText("None");
@@ -123,7 +131,7 @@ public class TrackActivity extends BasicActivity {
                     locationStatus.setText("Key错误");
                     break;
                 default:
-                    locationStatus.setText("定位失败"+msg.what);
+                    locationStatus.setText("定位失败" + msg.what);
                     break;
             }
         }
@@ -422,6 +430,10 @@ public class TrackActivity extends BasicActivity {
                 if (location.getLocType() == BDLocation.TypeGpsLocation) {
                     // Toast.makeText(TrackActivity.this, "GPS add", Toast.LENGTH_SHORT).show();
                     pts.add(ll);
+                    if (pts.size() >= 2) {
+                        //单位 米
+                        sum_distance += DistanceUtil.getDistance(pts.get(pts.size() - 1), pts.get(pts.size() - 1));
+                    }
                 } else {
                     // Toast.makeText(TrackActivity.this, "add", Toast.LENGTH_SHORT).show();
                 }
@@ -468,7 +480,7 @@ public class TrackActivity extends BasicActivity {
 
         if (location.getLocType() == BDLocation.TypeGpsLocation) {
 
-           // locationStatus.setText("GPS定位中 卫星数:"+location.getSatelliteNumber());
+            // locationStatus.setText("GPS定位中 卫星数:"+location.getSatelliteNumber());
             // GPS定位结果
             sb.append("\nspeed : ");
             sb.append(location.getSpeed());    // 单位：公里每小时
@@ -509,22 +521,21 @@ public class TrackActivity extends BasicActivity {
             sb.append("离线定位成功，离线定位结果也是有效的");
 
         } else if (location.getLocType() == BDLocation.TypeServerError) {
-           // locationStatus.setText("服务端网络定位失败");
+            // locationStatus.setText("服务端网络定位失败");
             sb.append("\ndescribe : ");
             sb.append("服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因");
 
         } else if (location.getLocType() == BDLocation.TypeNetWorkException) {
-          //  locationStatus.setText("网络定位失败，请检查网络");
+            //  locationStatus.setText("网络定位失败，请检查网络");
             sb.append("\ndescribe : ");
             sb.append("网络不同导致定位失败，请检查网络是否通畅");
 
         } else if (location.getLocType() == BDLocation.TypeCriteriaException) {
-          //  locationStatus.setText("多种原因定位失败");
+            //  locationStatus.setText("多种原因定位失败");
             sb.append("\ndescribe : ");
             sb.append("无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机");
-        }
-        else{
-           // locationStatus.setText("努力定位中");
+        } else {
+            // locationStatus.setText("努力定位中");
         }
 
         sb.append("\nlocationdescribe : ");
