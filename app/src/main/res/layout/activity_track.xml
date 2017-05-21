@@ -33,8 +33,33 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:layout_margin="15dp"
-            android:text="结束"
-            android:textSize="25sp" />
+            android:text="保存数据返回"
+            android:textSize="20sp" />
+        <LinearLayout
+            android:background="@drawable/shape_gps_bg"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="15dp"
+            android:layout_width="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/gps_status_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_sport_gps_map_disconnect"/>
+            <TextView
+                android:id="@+id/gps_status_tv"
+                android:textColor="#fff"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="GPS已关闭"/>
+        </LinearLayout>
     </FrameLayout>
 
     <LinearLayout
@@ -54,9 +79,12 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/distance"
+                    android:textColor="#000"
+                    android:textSize="30sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0.12" />
+                    android:text="0.00" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -73,9 +101,12 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/duration"
+                    android:textSize="30sp"
+                    android:textColor="#000"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="00:05:55" />
+                    android:text="00:00:00" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -86,6 +117,7 @@
         </LinearLayout>
 
         <Button
+            android:id="@+id/start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"

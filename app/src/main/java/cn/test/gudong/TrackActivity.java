@@ -1,7 +1,9 @@
 package cn.test.gudong;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
@@ -11,6 +13,8 @@ import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,25 +36,62 @@ import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import org.xutils.ex.DbException;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.test.gudong.db.entity.DBHelper;
+import cn.test.gudong.db.entity.Point;
+import cn.test.gudong.db.entity.Track;
 import cn.test.gudong.map.MyOrientationListener;
+import cn.test.gudong.user.User;
 
 public class TrackActivity extends BasicActivity {
     String tag = "TrackActivity";
+
+    private Track track = new Track();
+
+    @ViewInject(R.id.distance)
+    private TextView distance;//距离
+    private double sum_distance = 0.0;
+    @ViewInject(R.id.duration)
+    private TextView duration;//时长
+    private long durationLong;
+    private long startTime;// start and end time
+    private long endTime;
+    private boolean needCountdown = true;
+
+    @ViewInject(R.id.gps_status_image)
+    private ImageView gpsStatusImage;
+    @ViewInject(R.id.gps_status_tv)
+    private TextView gpsStatusTV;
+
+    @ViewInject(R.id.start)
+    private Button start;
+
+    private boolean isStart = false;
+
+    //private final int GPS_OPEN = 11;
+    private final int GPS_NOT_OPEN = 22;
+    private final int GPS_SEARCHING = 33;
+    private final int GPS_BAD = 44;
+    private final int GPS_GOOD = 55;
+
+    private final int START_COUNT_DOWN = 77;
+
 
     private TextView locationStatus;
     private TextView end;
 
     //地图模式
     private int mode = 1;//1.普通，2，跟随，3罗盘。默认是1；
-
-    private long startTime;// start and end time
-    private long endTime;
-
-    private double sum_distance = 0.0;
 
 
     MapView mapView;
@@ -130,12 +171,46 @@ public class TrackActivity extends BasicActivity {
                 case BDLocation.TypeServerCheckKeyError:
                     locationStatus.setText("Key错误");
                     break;
+               /* case GPS_OPEN:
+                    gpsStatusImage.setImageResource(R.drawable.ic_sport_gps_map_connect_1);
+                    break;*/
+                case GPS_NOT_OPEN:
+                    gpsStatusImage.setImageResource(R.drawable.ic_sport_gps_map_disconnect);
+                    gpsStatusTV.setText("GPS已关闭");
+                    break;
+                case GPS_SEARCHING:
+                    gpsStatusImage.setImageResource(R.drawable.ic_sport_gps_searching);
+                    gpsStatusTV.setText("GPS搜索中");
+                    break;
+                case GPS_GOOD:
+                    gpsStatusImage.setImageResource(R.drawable.ic_sport_gps_map_connect_3);
+                    gpsStatusTV.setText("GPS连接成功");
+                    break;
+                case GPS_BAD:
+                    // gpsStatusImage.setImageResource(R.drawable.ic_sport_gps_map_disconnect);
+                    break;
+                case START_COUNT_DOWN:
+                    int allSecond = (int) (durationLong / 1000);
+                    int hour = allSecond / 3600;
+                    int min = allSecond / 60 - hour * 60;
+                    int second = allSecond - 3600 * hour - min * 60;
+
+                    duration.setText(bu0(hour) + ":" + bu0(min) + ":" + bu0(second));
+                    break;
                 default:
                     locationStatus.setText("定位失败" + msg.what);
                     break;
             }
         }
     };
+
+    private String bu0(int time) {
+        if (time < 10) {
+            return "0" + time;
+        } else {
+            return "" + time;
+        }
+    }
 
     private void begain_location() {
         locateCurrent();
@@ -344,6 +419,7 @@ public class TrackActivity extends BasicActivity {
         end.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                insertTrack();
                 finish();
             }
         });
@@ -383,6 +459,7 @@ public class TrackActivity extends BasicActivity {
     private float mXDirection = 0;//方向角度,一开始归为0
     //轨迹点
     List<LatLng> pts = new ArrayList<LatLng>();
+    List<Point> myPoints = new ArrayList<>();
 
     public class MyLocationListener implements BDLocationListener {
         MyLocationData locData;
@@ -397,6 +474,21 @@ public class TrackActivity extends BasicActivity {
             handler.sendEmptyMessage(location.getLocType());
             // TODO 这里调试用与输出位置的相关信息
             outputResult(location);
+
+            //location.get
+            //gps is open
+            if (isGpsOpen()) {
+
+                if (location.getLocType() == BDLocation.TypeGpsLocation) {
+                    //BDLocation.GPS_ACCURACY_BAD;
+                    handler.sendEmptyMessage(GPS_GOOD);
+                } else {
+                    handler.sendEmptyMessage(GPS_SEARCHING);
+                }
+            } else {
+                handler.sendEmptyMessage(GPS_NOT_OPEN);
+            }
+
             // Toast.makeText(TrackActivity.this,"locType:"+location.getLocType(),Toast.LENGTH_SHORT).show();
             //167表示错误
             //Receive Location
@@ -424,12 +516,13 @@ public class TrackActivity extends BasicActivity {
             Log.e("jhd", "AddrStr:" + location.getAddrStr());
 
 
-            //位置有变化就增加一个点
-            if (last_localposition.latitude != ll.latitude || last_localposition.longitude != ll.longitude) {
+            //位置有变化就增加一个点,必须点击开始才会记录
+            if (isStart && (last_localposition.latitude != ll.latitude || last_localposition.longitude != ll.longitude)) {
 
                 if (location.getLocType() == BDLocation.TypeGpsLocation) {
                     // Toast.makeText(TrackActivity.this, "GPS add", Toast.LENGTH_SHORT).show();
                     pts.add(ll);
+                    myPoints.add(new Point("" + ll.latitude, "" + ll.longitude, "" + System.currentTimeMillis()));
                     if (pts.size() >= 2) {
                         //单位 米
                         sum_distance += DistanceUtil.getDistance(pts.get(pts.size() - 1), pts.get(pts.size() - 1));
@@ -485,6 +578,8 @@ public class TrackActivity extends BasicActivity {
             sb.append("\nspeed : ");
             sb.append(location.getSpeed());    // 单位：公里每小时
 
+            sb.append("\n GPS精度:jiahaodong " + location.getGpsAccuracyStatus());
+
             sb.append("\nsatellite : ");
             sb.append(location.getSatelliteNumber());    //获取卫星数
 
@@ -496,6 +591,7 @@ public class TrackActivity extends BasicActivity {
 
             sb.append("\naddr : ");
             sb.append(location.getAddrStr());    //获取地址信息
+            //  Toast.makeText(getApplicationContext(),sb.toString(),Toast.LENGTH_SHORT).show();
 
             sb.append("\ndescribe : ");
             sb.append("gps定位成功");
@@ -580,6 +676,86 @@ public class TrackActivity extends BasicActivity {
             // other 'case' lines to check for other
             // permissions this app might request
         }
+    }
+
+    private boolean isGpsOpen() {
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+    }
+
+    @Event(R.id.start)
+    private void clickStart(View v) {
+        if (!isGpsOpen()) {
+            Toast.makeText(this, "请打开GPS", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (isStart == false) {
+            isStart = true;
+            start.setText("结束");
+            startTime = System.currentTimeMillis();
+            Thread thread = new Thread() {
+                @Override
+                public void run() {
+                    super.run();
+                    while (needCountdown) {
+                        endTime = System.currentTimeMillis();
+                        durationLong = endTime - startTime;
+                        try {
+                            sleep(499);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        handler.sendEmptyMessage(START_COUNT_DOWN);
+                    }
+                }
+            };
+            thread.start();
+        } else {
+
+            needCountdown = false;
+            isStart = false;
+            start.setEnabled(false);
+        }
+    }
+
+    private void insertTrack() {
+    /*    if (myPoints.size() >= 2) {
+            User u = User.getInstace();
+            track.setId(-1);
+          //  track.setUsername(u.getUsername());
+            track.setTimestamp(startTime + "");
+            track.setTimestamp_e(endTime + "");
+            track.setDistance(sum_distance + "");
+
+
+            Type type = new TypeToken<List<Point>>() {
+            }.getType();
+            Gson gson = new Gson();
+            String json = gson.toJson(myPoints, type);
+            Log.e("jhd", json);
+            track.setPoints(json);
+            try {
+                DBHelper.insertTrack(track);
+            } catch (DbException e) {
+                e.printStackTrace();
+            }
+        }else{
+            Toast.makeText(this,"没有生成有效数据",Toast.LENGTH_SHORT).show();
+        }*/
+        track.setId(111);
+        track.setPoints("[{\"la\": \"1515\", \"lo\": \"515\", \"timestamp\": \"1511\"}]");
+        track.setUsername("jiahaodong");
+        track.setTimestamp("1495366333000");
+        track.setTimestamp_e("1495366348000");
+        track.setDistance("10");
+        track.setSync(0);
+        try {
+            DBHelper.insertTrack(track);
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

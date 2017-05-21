@@ -1,6 +1,8 @@
 package cn.test.gudong.db.entity;
 
 import org.xutils.DbManager;
+import org.xutils.common.util.KeyValue;
+import org.xutils.db.sqlite.WhereBuilder;
 import org.xutils.ex.DbException;
 import org.xutils.x;
 
@@ -46,6 +48,17 @@ public class DBHelper {
     public static void insertTrack(Track track) throws DbException {
         DbManager db= x.getDb(daoConfig);
         db.save(track);
+    }
+
+    public static List<Track> seleteUnSyncTrack() throws DbException {
+        DbManager db= x.getDb(daoConfig);
+        List<Track> tracks=db.selector(Track.class).where("sync","=",0).findAll();
+        return  tracks;
+    }
+    public static void updateTrack(Track track) throws DbException {
+        DbManager db= x.getDb(daoConfig);
+        //db.save(track);
+        db.update(Track.class, WhereBuilder.b("id","=",track.getId()),new KeyValue("sync", 1));
     }
 
 }

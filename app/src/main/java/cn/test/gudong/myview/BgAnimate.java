@@ -88,7 +88,7 @@ public class BgAnimate extends View {
 
                 dymicH= (int) (dp2px(h-9)/2*f);
 
-                Log.i("Tag", "Value is" + String.valueOf(dymicH));
+                //Log.i("Tag", "Value is" + String.valueOf(dymicH));
                 invalidate();
             }
         });
