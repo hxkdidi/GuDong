@@ -22,10 +22,11 @@ public interface Config {
 
     public static final int GET_GAME = 7;
     public static final int JOIN_NUM = 8;
+    public static final int GET_MY_GAME = 9;
 
-   // public static String IP = "172.16.96.93";
+    public static String IP = "172.16.96.131";
     //172.16.96.93
-    public static String IP = "192.168.31.192";
+    //public static String IP = "192.168.31.192";
 
     public static String IP_SIGN = "http://" + IP + ":8080/GuDongS/sign";
     public static String IP_GET_GAME = "http://" + IP + ":8080/GuDongS/most";

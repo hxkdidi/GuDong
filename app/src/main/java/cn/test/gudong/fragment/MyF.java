@@ -38,6 +38,7 @@ import cn.test.gudong.db.entity.DBTestActivity;
 import cn.test.gudong.db.entity.Track;
 import cn.test.gudong.sign.LoginA;
 import cn.test.gudong.user.BDTraceA;
+import cn.test.gudong.user.User;
 
 /**
  * Created by jiahaodong on 2017/4/28-23:29.
@@ -96,6 +97,9 @@ public class MyF extends BasicFragment {
     @Override
     public void onResume() {
         super.onResume();
+
+
+        //----重新加载所有轨迹信息--------------------
         try {
             tracks = DBHelper.seleteAllTrack();
             // list_history.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -104,7 +108,7 @@ public class MyF extends BasicFragment {
             e.printStackTrace();
         }
 
-        ///-------------------
+        ///------将未上传轨迹 进行上传处理-------------
         try {
             tracksUnSync = DBHelper.seleteUnSyncTrack();
             //为空，或大小为0 就不用去同步了
@@ -125,8 +129,8 @@ public class MyF extends BasicFragment {
                     boolean isSuc1 = jo.get("isSuc").getAsBoolean();
                     Log.d("jhd", "track: json： " + isSuc1);
                     if (isSuc1) {
-                        Toast.makeText(getActivity(), "同步"+tracksUnSync.size()+"条成功", Toast.LENGTH_SHORT).show();
-                        for(Track temp:tracksUnSync){
+                        Toast.makeText(getActivity(), "同步" + tracksUnSync.size() + "条成功", Toast.LENGTH_SHORT).show();
+                        for (Track temp : tracksUnSync) {
                             try {
                                 DBHelper.updateTrack(temp);
                             } catch (DbException e) {
@@ -177,6 +181,14 @@ public class MyF extends BasicFragment {
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             if (getItemViewType(position) == TYPE_HEADER) {
                 // ((MyHeaderHolder)holder).
+                //判断用户是否已登录
+                User u = User.getInstace();
+                if (u.getUsername() != null) {
+                    MyHeaderHolder headerHolder = (MyHeaderHolder) holder;
+                    headerHolder.login.setText(u.getUsername());
+
+                }
+
             } else {
                 MyHolder myHolder = (MyHolder) holder;
                 Track track = tracks.get(position - 1);
@@ -246,8 +258,11 @@ public class MyF extends BasicFragment {
             login.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.e("jhd", "click login on my");
-                    startActivity(new Intent(getActivity(), LoginA.class));
+                    //User 中的 username为空证明用户没有登录过，点击会跳转到登录页面，否则不进行任何操作
+                    if (User.getInstace().getUsername() == null) {
+                        Log.e("jhd", "click login on my");
+                        startActivity(new Intent(getActivity(), LoginA.class));
+                    }
                 }
             });
         }

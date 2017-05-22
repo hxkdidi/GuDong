@@ -21,6 +21,7 @@ import com.google.gson.reflect.TypeToken;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
@@ -34,6 +35,7 @@ import cn.test.gudong.Config;
 import cn.test.gudong.R;
 import cn.test.gudong.db.entity.Game;
 import cn.test.gudong.game.GameDetailActivity;
+import cn.test.gudong.game.MyGameActivity;
 
 /**
  * Created by jiahaodong on 2017/4/28-23:29.
@@ -47,9 +49,12 @@ public class GameF extends BasicFragment {
     @ViewInject(R.id.recycler)
     RecyclerView recyclerView;
 
+    @ViewInject(R.id.my_game)
+    private TextView myGame;
+
     List<Game> datas = new ArrayList<Game>();
 
-    Map<Integer,Integer> map=new HashMap<>();
+    Map<Integer, Integer> map = new HashMap<>();
 
     public GameF() {
         super();
@@ -70,7 +75,7 @@ public class GameF extends BasicFragment {
                     adapter.setOnItemClickListener(new MyOnItemClickListener() {
                         @Override
                         public void onItemClick(View v, int postion) {
-                            Toast.makeText(getActivity(), "p:" + postion, Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(getActivity(), "p:" + postion, Toast.LENGTH_SHORT).show();
                             Intent it = new Intent();
                             it.setClass(getActivity(), GameDetailActivity.class);
                             it.putExtra("url", datas.get(postion).getDetails());
@@ -173,10 +178,11 @@ public class GameF extends BasicFragment {
         public void onBindViewHolder(MyHodler holder, int position) {
             Game game = datas.get(position);
             holder.title.setText(game.getTitle());
-            holder.countDown.setText("倒计时:"+game.getDate());
+            holder.countDown.setText("开始日期:" + game.getDate());
             holder.tags.setText(game.getTag());
-            holder.num.setText("  报名人数:"+game.getPeoplenum());
+            holder.num.setText("  报名人数:" + game.getPeoplenum());
             holder.itemView.setTag(position);
+            holder.imageView.setImageResource(getImage(game.getImage()));
 
 
         }
@@ -221,5 +227,30 @@ public class GameF extends BasicFragment {
         public void onItemClick(View v, int postion);
     }
 
+    @Event(R.id.my_game)
+    private void myGame(View v) {
+        startActivity(new Intent(getActivity(), MyGameActivity.class));
 
+    }
+
+    private int getImage(String imageNum) {
+        if (imageNum.equals("1")) {
+            return R.drawable.a1lanzhou;
+        } else if (imageNum.equals("2")) {
+            return R.drawable.a2weiduoliya;
+        } else if (imageNum.equals("3")) {
+            return R.drawable.a3rongcheng;
+        } else if (imageNum.equals("4")) {
+            return R.drawable.a4yidali;
+        } else if (imageNum.equals("5")) {
+            return R.drawable.a5yingkou;
+        }
+        return R.drawable.a1lanzhou;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        handler.sendEmptyMessage(0);
+    }
 }

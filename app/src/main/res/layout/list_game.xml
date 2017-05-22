@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:padding="15dp"
+    android:paddingRight="15dp"
+    android:paddingLeft="15dp"
     android:layout_height="wrap_content">
 
 
         <ImageView
+            android:scaleType="fitCenter"
             android:id="@+id/image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@drawable/a1lanzhou" />
 
         <TextView
+            android:textColor="#000"
             android:id="@+id/title"
+            android:textSize="13sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2017黄河口（东营）线上马拉松赛" />
@@ -26,17 +30,23 @@
                 android:id="@+id/count_down"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="倒计时：7天23时48分" />
+                android:text="开始日期：6月01号" />
 
             <TextView
                 android:id="@+id/num"
+                android:layout_marginLeft="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="报名人数：135777" />
         </LinearLayout>
 
         <TextView
+            android:background="@drawable/shape_tag"
             android:id="@+id/tags"
+            android:paddingRight="4dp"
+            android:paddingLeft="4dp"
+            android:paddingBottom="2dp"
+            android:paddingTop="2dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"

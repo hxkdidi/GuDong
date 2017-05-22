@@ -2,6 +2,8 @@ package cn.test.gudong.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -16,6 +18,7 @@ import java.util.List;
 import cn.test.gudong.BasicFragment;
 import cn.test.gudong.R;
 import cn.test.gudong.TrackActivity;
+import cn.test.gudong.sign.LoginA;
 
 /**
  * Created by jiahaodong on 2017/4/27-14:05.
@@ -35,6 +38,17 @@ public class SportF extends BasicFragment{
     private View jibu;
 
     Button begain;
+
+    Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what==1){
+                //启动登录页面
+                startActivity(new Intent(getActivity(), LoginA.class));
+            }
+        }
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -84,6 +98,9 @@ public class SportF extends BasicFragment{
             }
         };
         vp.setAdapter(pagerAdapter);
+
+        //启动登录页面
+        handler.sendEmptyMessage(1);
 
         return view;
        // return super.onCreateView(inflater, container, savedInstanceState);

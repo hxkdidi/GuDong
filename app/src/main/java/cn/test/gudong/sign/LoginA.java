@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -21,6 +22,7 @@ import org.xutils.x;
 import cn.test.gudong.BasicActivity;
 import cn.test.gudong.Config;
 import cn.test.gudong.R;
+import cn.test.gudong.user.User;
 
 /**
  * Created by jiahaodong on 2017/4/27-13:42.
@@ -42,6 +44,9 @@ public class LoginA extends BasicActivity {
     @ViewInject(R.id.sign_up)
     private Button sign_up;
 
+    @ViewInject(R.id.back)
+    private ImageButton back;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.a_login);
@@ -60,8 +65,8 @@ public class LoginA extends BasicActivity {
 
     @Event(R.id.login)
     private void login(View v) {
-        String usernameStr = username.getText().toString();
-        String passwordStr = password.getText().toString();
+        final String usernameStr = username.getText().toString();
+        final String passwordStr = password.getText().toString();
         RequestParams params = new RequestParams(Config.IP_SIGN);
         params.addQueryStringParameter("username", usernameStr);
         params.addQueryStringParameter("password", passwordStr);
@@ -76,6 +81,10 @@ public class LoginA extends BasicActivity {
                     Log.d("jhd", "login: json： " + isSuc1);
                     if(isSuc1){
                         //TODO login suc
+                        User u= User.getInstace();
+                        u.setUsername(usernameStr);
+                        u.setPassword(passwordStr);
+                        finish();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -142,5 +151,10 @@ public class LoginA extends BasicActivity {
 
             }
         });
+    }
+
+    @Event(R.id.back)
+    private void back(View v){
+        finish();
     }
 }
