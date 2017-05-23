@@ -22,9 +22,12 @@
             <Button
                 android:id="@+id/join"
                 android:layout_margin="10dp"
+                android:background="@drawable/btn_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="报名"/>
+                android:textColor="#fff"
+                android:textSize="20sp"
+                android:text="报   名"/>
         </LinearLayout>
     </FrameLayout>
 </LinearLayout>

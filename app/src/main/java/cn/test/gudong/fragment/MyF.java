@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ import cn.test.gudong.db.entity.DBTestActivity;
 import cn.test.gudong.db.entity.Track;
 import cn.test.gudong.sign.LoginA;
 import cn.test.gudong.user.BDTraceA;
+import cn.test.gudong.user.TrackDetailActivity;
 import cn.test.gudong.user.User;
 
 /**
@@ -194,13 +196,16 @@ public class MyF extends BasicFragment {
                 Track track = tracks.get(position - 1);
                 String date = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date(Long.parseLong(track.getTimestamp())));
                 myHolder.start_time.setText(date);
-                myHolder.distance.setText(track.getDistance());
+                int m = (int) Double.parseDouble(track.getDistance());
+                myHolder.distance.setText("" + m);
                 long duration = Long.parseLong(track.getTimestamp_e()) - Long.parseLong(track.getTimestamp());
                 int allSecond = (int) (duration / 1000);
                 int hour = allSecond / 3600;
                 int min = allSecond / 60 - hour * 60;
                 int second = allSecond - 3600 * hour - min * 60;
                 myHolder.duration.setText(bu0(hour) + ":" + bu0(min) + ":" + bu0(second));
+                int myspeed = (int) ((double) m / (double) allSecond * 60D);
+                myHolder.speed.setText(myspeed + " m/min");
 
             }
 
@@ -231,12 +236,23 @@ public class MyF extends BasicFragment {
         }
     }
 
-    public class MyHolder extends RecyclerView.ViewHolder {
+    public class MyHolder extends RecyclerView.ViewHolder{
 
         private TextView start_time;
         private TextView duration;
         private TextView speed;
         private TextView distance;
+        private ImageView image;
+
+        View.OnClickListener listener=new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(),""+getPosition(),Toast.LENGTH_SHORT).show();
+                Intent it=new Intent(getContext(), TrackDetailActivity.class);
+                it.putExtra("points",tracks.get(getPosition()-1).getPoints());
+                startActivity(it);
+            }
+        };
 
         public MyHolder(View v) {
             super(v);
@@ -244,7 +260,8 @@ public class MyF extends BasicFragment {
             duration = (TextView) v.findViewById(R.id.duration);
             speed = (TextView) v.findViewById(R.id.speed);
             distance = (TextView) v.findViewById(R.id.distance);
-
+            image= (ImageView) v.findViewById(R.id.image1);
+            image.setOnClickListener(listener);
         }
     }
 

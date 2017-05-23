@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
-        android:text="总里程"
+        android:text="总里程(m)"
         android:textColor="#fff" />
 
     <TextView
@@ -22,7 +22,7 @@
         android:layout_below="@id/zlc"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
-        android:text="0.00"
+        android:text="0"
         android:textColor="#fff"
         android:textSize="80sp"
         android:textStyle="bold" />

@@ -525,7 +525,7 @@ public class TrackActivity extends BasicActivity {
                     myPoints.add(new Point("" + ll.latitude, "" + ll.longitude, "" + System.currentTimeMillis()));
                     if (pts.size() >= 2) {
                         //单位 米
-                        sum_distance += DistanceUtil.getDistance(pts.get(pts.size() - 1), pts.get(pts.size() - 1));
+                        sum_distance += DistanceUtil.getDistance(pts.get(pts.size() - 1), pts.get(pts.size() - 2));
                     }
                 } else {
                     // Toast.makeText(TrackActivity.this, "add", Toast.LENGTH_SHORT).show();
@@ -720,10 +720,15 @@ public class TrackActivity extends BasicActivity {
     }
 
     private void insertTrack() {
-    /*    if (myPoints.size() >= 2) {
-            User u = User.getInstace();
-            track.setId(-1);
-          //  track.setUsername(u.getUsername());
+        String username = User.getInstace().getUsername();
+        if(username == null){
+            Toast.makeText(this,"请先登录",Toast.LENGTH_SHORT).show();
+        }
+        if (myPoints.size() >= 2) {
+           //User u = User.getInstace();
+            track.setId(11);
+            track.setUsername(username);
+            //  track.setUsername(u.getUsername());
             track.setTimestamp(startTime + "");
             track.setTimestamp_e(endTime + "");
             track.setDistance(sum_distance + "");
@@ -740,9 +745,10 @@ public class TrackActivity extends BasicActivity {
             } catch (DbException e) {
                 e.printStackTrace();
             }
-        }else{
-            Toast.makeText(this,"没有生成有效数据",Toast.LENGTH_SHORT).show();
-        }*/
+        } else {
+            Toast.makeText(this, "没有生成有效数据", Toast.LENGTH_SHORT).show();
+        }
+    /*
         track.setId(111);
         track.setPoints("[{\"la\": \"1515\", \"lo\": \"515\", \"timestamp\": \"1511\"}]");
         track.setUsername("jiahaodong");
@@ -755,7 +761,7 @@ public class TrackActivity extends BasicActivity {
         } catch (DbException e) {
             e.printStackTrace();
         }
-
+*/
     }
 
 }

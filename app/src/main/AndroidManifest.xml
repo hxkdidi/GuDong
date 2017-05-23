@@ -59,6 +59,7 @@
         <activity android:name=".game.GameDetailActivity" />
         <activity android:name=".user.BDTraceA" />
         <activity android:name=".game.MyGameActivity"></activity>
+        <activity android:name=".user.TrackDetailActivity"/>
     </application>
 
 </manifest>
