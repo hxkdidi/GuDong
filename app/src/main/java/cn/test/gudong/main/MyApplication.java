@@ -1,8 +1,10 @@
-package cn.test.gudong;
+package cn.test.gudong.main;
 
 import android.app.Application;
 
 import org.xutils.x;
+
+import cn.test.gudong.BuildConfig;
 
 /**
  * Created by jiahaodong on 2017/5/5-13:58.

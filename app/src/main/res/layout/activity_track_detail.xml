@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="cn.test.gudong.TrackActivity">
+    tools:context=".main.fragment.main_sport.TrackActivity">
 
 
     <com.baidu.mapapi.map.MapView

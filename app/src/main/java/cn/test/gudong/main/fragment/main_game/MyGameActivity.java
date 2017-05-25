@@ -1,16 +1,13 @@
-package cn.test.gudong.game;
+package cn.test.gudong.main.fragment.main_game;
 
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,11 +23,11 @@ import org.xutils.x;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.test.gudong.BasicActivity;
+import cn.test.gudong.main.BasicActivity;
 import cn.test.gudong.Config;
 import cn.test.gudong.R;
 import cn.test.gudong.db.entity.MyGame;
-import cn.test.gudong.user.User;
+import cn.test.gudong.db.entity.User;
 
 @ContentView(R.layout.activity_my_game)
 public class MyGameActivity extends BasicActivity {

@@ -1,4 +1,4 @@
-package cn.test.gudong;
+package cn.test.gudong.main;
 
 
 import android.os.Bundle;

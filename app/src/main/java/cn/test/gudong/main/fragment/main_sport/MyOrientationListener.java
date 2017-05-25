@@ -1,4 +1,4 @@
-package cn.test.gudong.map;
+package cn.test.gudong.main.fragment.main_sport;
 
 import android.content.Context;
 import android.hardware.Sensor;

@@ -1,4 +1,4 @@
-package cn.test.gudong.fragment;
+package cn.test.gudong.main.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,25 +21,21 @@ import org.xutils.common.Callback;
 import org.xutils.ex.DbException;
 import org.xutils.http.RequestParams;
 import org.xutils.view.annotation.ContentView;
-import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import cn.test.gudong.BasicFragment;
+import cn.test.gudong.main.BasicFragment;
 import cn.test.gudong.Config;
 import cn.test.gudong.R;
-import cn.test.gudong.db.entity.DBHelper;
-import cn.test.gudong.db.entity.DBTestActivity;
+import cn.test.gudong.db.DBHelper;
 import cn.test.gudong.db.entity.Track;
 import cn.test.gudong.sign.LoginA;
-import cn.test.gudong.user.BDTraceA;
-import cn.test.gudong.user.TrackDetailActivity;
-import cn.test.gudong.user.User;
+import cn.test.gudong.main.fragment.main_my.TrackDetailActivity;
+import cn.test.gudong.db.entity.User;
 
 /**
  * Created by jiahaodong on 2017/4/28-23:29.

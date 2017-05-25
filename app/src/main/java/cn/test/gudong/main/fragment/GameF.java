@@ -1,4 +1,4 @@
-package cn.test.gudong.fragment;
+package cn.test.gudong.main.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -30,12 +29,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.test.gudong.BasicFragment;
+import cn.test.gudong.main.BasicFragment;
 import cn.test.gudong.Config;
 import cn.test.gudong.R;
 import cn.test.gudong.db.entity.Game;
-import cn.test.gudong.game.GameDetailActivity;
-import cn.test.gudong.game.MyGameActivity;
+import cn.test.gudong.main.fragment.main_game.GameDetailActivity;
+import cn.test.gudong.main.fragment.main_game.MyGameActivity;
 
 /**
  * Created by jiahaodong on 2017/4/28-23:29.

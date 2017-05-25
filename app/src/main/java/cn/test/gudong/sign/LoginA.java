@@ -8,8 +8,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -19,10 +17,10 @@ import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-import cn.test.gudong.BasicActivity;
+import cn.test.gudong.main.BasicActivity;
 import cn.test.gudong.Config;
 import cn.test.gudong.R;
-import cn.test.gudong.user.User;
+import cn.test.gudong.db.entity.User;
 
 /**
  * Created by jiahaodong on 2017/4/27-13:42.

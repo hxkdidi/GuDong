@@ -1,4 +1,4 @@
-package cn.test.gudong.db.entity;
+package cn.test.gudong.db;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -10,8 +10,9 @@ import org.xutils.ex.DbException;
 
 import java.util.List;
 
-import cn.test.gudong.BasicActivity;
+import cn.test.gudong.main.BasicActivity;
 import cn.test.gudong.R;
+import cn.test.gudong.db.entity.Track;
 
 /**
  * Created by jiahaodong on 2017/5/5-14:33.

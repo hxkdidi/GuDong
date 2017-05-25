@@ -1,4 +1,4 @@
-package cn.test.gudong.fragment;
+package cn.test.gudong.main.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import org.xutils.ex.DbException;
@@ -18,10 +17,10 @@ import org.xutils.ex.DbException;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.test.gudong.BasicFragment;
+import cn.test.gudong.main.BasicFragment;
 import cn.test.gudong.R;
-import cn.test.gudong.TrackActivity;
-import cn.test.gudong.db.entity.DBHelper;
+import cn.test.gudong.main.fragment.main_sport.TrackActivity;
+import cn.test.gudong.db.DBHelper;
 import cn.test.gudong.db.entity.Track;
 import cn.test.gudong.sign.LoginA;
 
@@ -29,6 +28,11 @@ import cn.test.gudong.sign.LoginA;
  * Created by jiahaodong on 2017/4/27-14:05.
  * 935410469@qq.com
  * https://github.com/jhd147350
+ */
+
+/**
+ * 这个页面里包含一个可左右滑动的Viewpager
+ * 一个是运动界面，另一个是计步界面，计步功能没有实现
  */
 
 public class SportF extends BasicFragment {

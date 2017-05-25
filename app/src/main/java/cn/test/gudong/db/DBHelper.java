@@ -1,4 +1,4 @@
-package cn.test.gudong.db.entity;
+package cn.test.gudong.db;
 
 import org.xutils.DbManager;
 import org.xutils.common.util.KeyValue;
@@ -8,6 +8,8 @@ import org.xutils.x;
 
 import java.io.File;
 import java.util.List;
+
+import cn.test.gudong.db.entity.Track;
 
 /**
  * Created by jiahaodong on 2017/5/5-14:00.

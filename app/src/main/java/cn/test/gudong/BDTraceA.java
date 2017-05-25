@@ -1,4 +1,4 @@
-package cn.test.gudong.user;
+package cn.test.gudong;
 
 import android.app.Activity;
 import android.graphics.Color;

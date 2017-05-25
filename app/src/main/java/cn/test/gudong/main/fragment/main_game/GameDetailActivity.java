@@ -1,4 +1,4 @@
-package cn.test.gudong.game;
+package cn.test.gudong.main.fragment.main_game;
 
 import android.net.http.SslError;
 import android.os.Bundle;
@@ -21,11 +21,10 @@ import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-import cn.test.gudong.BasicActivity;
+import cn.test.gudong.main.BasicActivity;
 import cn.test.gudong.Config;
 import cn.test.gudong.R;
-import cn.test.gudong.sign.LoginA;
-import cn.test.gudong.user.User;
+import cn.test.gudong.db.entity.User;
 
 @ContentView(R.layout.activity_game_detail)
 public class GameDetailActivity extends BasicActivity {

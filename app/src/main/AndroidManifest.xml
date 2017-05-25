@@ -30,7 +30,7 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
 
     <application
-        android:name=".MyApplication"
+        android:name=".main.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -40,26 +40,26 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="uP8ly5lsTyBEBsowuxQ4eDoxmQIPtqWc" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TrackActivity" />
+        <activity android:name=".main.fragment.main_sport.TrackActivity" />
 
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote" />
 
-        <activity android:name=".db.entity.DBTestActivity" />
+        <activity android:name=".db.DBTestActivity" />
         <activity android:name=".sign.LoginA" />
-        <activity android:name=".game.GameDetailActivity" />
-        <activity android:name=".user.BDTraceA" />
-        <activity android:name=".game.MyGameActivity"></activity>
-        <activity android:name=".user.TrackDetailActivity"/>
+        <activity android:name=".main.fragment.main_game.GameDetailActivity" />
+        <activity android:name=".BDTraceA" />
+        <activity android:name=".main.fragment.main_game.MyGameActivity"></activity>
+        <activity android:name=".main.fragment.main_my.TrackDetailActivity"/>
     </application>
 
 </manifest>

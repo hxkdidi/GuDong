@@ -1,4 +1,4 @@
-package cn.test.gudong.user;
+package cn.test.gudong.db.entity;
 
 /**
  * Created by jiahaodong on 2017/5/5-15:25.

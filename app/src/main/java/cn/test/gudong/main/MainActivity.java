@@ -1,6 +1,5 @@
-package cn.test.gudong;
+package cn.test.gudong.main;
 
-import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -9,13 +8,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.TextView;
 
 import org.xutils.view.annotation.ViewInject;
 
-import cn.test.gudong.fragment.GameF;
-import cn.test.gudong.fragment.MyF;
-import cn.test.gudong.fragment.SportF;
+import cn.test.gudong.R;
+import cn.test.gudong.main.fragment.GameF;
+import cn.test.gudong.main.fragment.MyF;
+import cn.test.gudong.main.fragment.SportF;
 
 public class MainActivity extends BasicActivity implements View.OnClickListener {
     String tag = "MainActivity";

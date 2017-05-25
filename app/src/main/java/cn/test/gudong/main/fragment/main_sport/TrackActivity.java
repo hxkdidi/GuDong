@@ -1,4 +1,4 @@
-package cn.test.gudong;
+package cn.test.gudong.main.fragment.main_sport;
 
 import android.Manifest;
 import android.content.Context;
@@ -47,11 +47,12 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.test.gudong.db.entity.DBHelper;
+import cn.test.gudong.main.BasicActivity;
+import cn.test.gudong.R;
+import cn.test.gudong.db.DBHelper;
 import cn.test.gudong.db.entity.Point;
 import cn.test.gudong.db.entity.Track;
-import cn.test.gudong.map.MyOrientationListener;
-import cn.test.gudong.user.User;
+import cn.test.gudong.db.entity.User;
 
 public class TrackActivity extends BasicActivity {
     String tag = "TrackActivity";
