@@ -5,5 +5,5 @@
 
 app截图如下：  
 
-![01](pic/merge01)
-![02](pic/merge02)
+![01](pic/merge01.jgp)
+![02](pic/merge02.jgp)
